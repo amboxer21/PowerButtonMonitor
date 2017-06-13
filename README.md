@@ -1,2 +1,2 @@
 # PowerButtonMonitor
-A program to monitor the lock/unlock button for android
+Monitor the lock/unlock button on android
