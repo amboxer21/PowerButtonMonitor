@@ -29,8 +29,8 @@ public class PowerButtonMonitor extends Activity {
       Context.BIND_AUTO_CREATE);*/
 
     registerReceiver(new PowerButtonMonitorReceiver(), new IntentFilter("android.intent.action.USER_PRESENT"));
-    registerReceiver(new PowerButtonMonitorReceiver(), new IntentFilter("android.intent.action.ACTION_SCREEN_ON"));
-    registerReceiver(new PowerButtonMonitorReceiver(), new IntentFilter("android.intent.action.ACTION_SCREEN_OFF"));
+    //registerReceiver(new PowerButtonMonitorReceiver(), new IntentFilter("android.intent.action.ACTION_SCREEN_ON"));
+    //registerReceiver(new PowerButtonMonitorReceiver(), new IntentFilter("android.intent.action.ACTION_SCREEN_OFF"));
 
     Intent serviceIntent = new Intent(this, PowerButtonMonitorService.class);
     startService(serviceIntent);
