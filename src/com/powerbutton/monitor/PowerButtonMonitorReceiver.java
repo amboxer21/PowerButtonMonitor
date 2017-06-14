@@ -19,13 +19,6 @@ public class PowerButtonMonitorReceiver extends BroadcastReceiver {
         if(!keyguardManager.inKeyguardRestrictedInputMode()) {
           Log.d("PowerButtonMonitorReceiver","Unlocked");
           powerButtonMonitorIntent = new Intent(context, PowerButtonMonitorService.class);
-          powerButtonMonitorIntent.putExtra("state", "off");
-          context.startService(powerButtonMonitorIntent);
-          return;
-        }
-        else {
-          Log.d("PowerButtonMonitorReceiver","Locked");
-          powerButtonMonitorIntent = new Intent(context, PowerButtonMonitorService.class);
           powerButtonMonitorIntent.putExtra("state", "on");
           context.startService(powerButtonMonitorIntent);
           return;
