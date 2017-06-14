@@ -1,7 +1,7 @@
 # PowerButtonMonitor
 Monitor the lock/unlock button on android
 
-> Brief
+## [Brief]
 
 `This project is for a larger Android app that I am going to integrate this code into.`
 
