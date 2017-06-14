@@ -27,7 +27,6 @@ public class PowerButtonMonitor extends Activity {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-      Log.i("[PowerButtonMonitorReceiver]", "MyReceiver");
       if(intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
         //Log.i("[PowerButtonMonitorReceiver]", "Screen ON");
         powerButtonMonitorIntent = new Intent(context, PowerButtonMonitorService.class);
