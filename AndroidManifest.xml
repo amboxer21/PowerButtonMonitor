@@ -18,12 +18,5 @@
             </intent-filter>
         </activity>
         <service android:name=".PowerButtonMonitorService" android:enabled="true"/>
-        <!--<receiver android:name=".PowerButtonMonitorReceiver" android:enabled="true" android:exported="true">
-          <intent-filter>
-            <action android:name="android.intent.action.USER_PRESENT"/>
-            <action android:name="android.intent.action.ACTION_SCREEN_OFF"/>
-            <action android:name="android.intent.action.ACTION_SCREEN_ON"/>
-          </intent-filter>
-        </receiver>-->
     </application>
 </manifest>
