@@ -29,13 +29,13 @@ public class PowerButtonMonitor extends Activity {
 
       Log.i("[PowerButtonMonitorReceiver]", "MyReceiver");
       if(intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
-        Log.i("[PowerButtonMonitorReceiver]", "Screen ON");
+        //Log.i("[PowerButtonMonitorReceiver]", "Screen ON");
         powerButtonMonitorIntent = new Intent(context, PowerButtonMonitorService.class);
         powerButtonMonitorIntent.putExtra("state", "on");
         context.startService(powerButtonMonitorIntent);
       }
       else if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
-        Log.i("[PowerButtonMonitorReceiver]", "Screen OFF");
+        //Log.i("[PowerButtonMonitorReceiver]", "Screen OFF");
         powerButtonMonitorIntent = new Intent(context, PowerButtonMonitorService.class);
         powerButtonMonitorIntent.putExtra("state", "off");
         context.startService(powerButtonMonitorIntent);
