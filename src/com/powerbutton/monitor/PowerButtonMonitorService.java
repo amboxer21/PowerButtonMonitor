@@ -17,6 +17,7 @@ import android.telephony.TelephonyManager;
 public class PowerButtonMonitorService extends Service {
 
   private static String state = "on";
+  private static boolean is_screen_off = true;
 
   @Override
   public IBinder onBind(Intent intent) {
@@ -27,12 +28,19 @@ public class PowerButtonMonitorService extends Service {
   public int onStartCommand(Intent intent, int flags, int startId) {
     Log.d("PowerButtonMonitorService", "Service started.");
 
-    //Bundle extras = getIntent().getExtras(); 
     Bundle extras = intent.getExtras(); 
 
     if(extras != null) {
       state = extras.getString("state");
-      Log.d("PowerButtonMonitorService", state);
+      Log.d("PowerButtonMonitorService state:", state);
+      if(state.equals("on")) {
+        is_screen_off = true;
+        Log.d("PowerButtonMonitorService is_screen_off:", "true");
+      }
+      else {
+        is_screen_off = false;
+        Log.d("PowerButtonMonitorService is_screen_off:", "false");
+      }
     }
     return Service.START_STICKY;
   }

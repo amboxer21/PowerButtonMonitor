@@ -2,6 +2,7 @@ package com.powerbutton.monitor;
 
 import android.util.Log;
 import android.widget.Toast;
+
 import android.app.Activity;
 
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
+import android.content.BroadcastReceiver;
 
 import android.os.Bundle;
 import android.os.IBinder;
@@ -19,21 +21,39 @@ public class PowerButtonMonitor extends Activity {
   private boolean mBound;
   private Messenger mService = null;
   private static long backPressedTime = 0;
+  private static Intent powerButtonMonitorIntent;
+
+  BroadcastReceiver PowerButtonMonitorReceiver = new BroadcastReceiver() {    
+    @Override
+    public void onReceive(Context context, Intent intent) {
+
+      Log.i("[PowerButtonMonitorReceiver]", "MyReceiver");
+      if(intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
+        Log.i("[PowerButtonMonitorReceiver]", "Screen ON");
+        powerButtonMonitorIntent = new Intent(context, PowerButtonMonitorService.class);
+        powerButtonMonitorIntent.putExtra("state", "on");
+        context.startService(powerButtonMonitorIntent);
+      }
+      else if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
+        Log.i("[PowerButtonMonitorReceiver]", "Screen OFF");
+        powerButtonMonitorIntent = new Intent(context, PowerButtonMonitorService.class);
+        powerButtonMonitorIntent.putExtra("state", "off");
+        context.startService(powerButtonMonitorIntent);
+      }
+
+    }
+  };
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
 
-    /*bindService(new Intent(this, PowerButtonMonitorService.class), mConnection,
-      Context.BIND_AUTO_CREATE);*/
-
-    registerReceiver(new PowerButtonMonitorReceiver(), new IntentFilter("android.intent.action.USER_PRESENT"));
-    //registerReceiver(new PowerButtonMonitorReceiver(), new IntentFilter("android.intent.action.ACTION_SCREEN_ON"));
-    //registerReceiver(new PowerButtonMonitorReceiver(), new IntentFilter("android.intent.action.ACTION_SCREEN_OFF"));
-
     Intent serviceIntent = new Intent(this, PowerButtonMonitorService.class);
     startService(serviceIntent);
+
+    registerReceiver(PowerButtonMonitorReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON)); 
+    registerReceiver(PowerButtonMonitorReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
 
   }
 
