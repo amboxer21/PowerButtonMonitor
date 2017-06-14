@@ -16,6 +16,8 @@ import android.telephony.TelephonyManager;
 
 public class PowerButtonMonitorService extends Service {
 
+  private static String state = "on";
+
   @Override
   public IBinder onBind(Intent intent) {
     return mMessenger.getBinder();
@@ -24,6 +26,14 @@ public class PowerButtonMonitorService extends Service {
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
     Log.d("PowerButtonMonitorService", "Service started.");
+
+    //Bundle extras = getIntent().getExtras(); 
+    Bundle extras = intent.getExtras(); 
+
+    if(extras != null) {
+      state = extras.getString("state");
+      Log.d("PowerButtonMonitorService", state);
+    }
     return Service.START_STICKY;
   }
 

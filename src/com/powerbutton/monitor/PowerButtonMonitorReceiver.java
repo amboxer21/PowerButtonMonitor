@@ -9,14 +9,26 @@ import android.content.BroadcastReceiver;
 
 public class PowerButtonMonitorReceiver extends BroadcastReceiver {
 
+    private static Intent powerButtonMonitorIntent;
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
         KeyguardManager keyguardManager = (KeyguardManager)context.getSystemService(Context.KEYGUARD_SERVICE);
         //if (keyguardManager.isKeyguardSecure()) {
         if(!keyguardManager.inKeyguardRestrictedInputMode()) {
-          //Toast.makeText(getApplicationContext(), "Unlocked", Toast.LENGTH_LONG).show();
           Log.d("PowerButtonMonitorReceiver","Unlocked");
+          powerButtonMonitorIntent = new Intent(context, PowerButtonMonitorService.class);
+          powerButtonMonitorIntent.putExtra("state", "off");
+          context.startService(powerButtonMonitorIntent);
+          return;
+        }
+        else {
+          Log.d("PowerButtonMonitorReceiver","Locked");
+          powerButtonMonitorIntent = new Intent(context, PowerButtonMonitorService.class);
+          powerButtonMonitorIntent.putExtra("state", "on");
+          context.startService(powerButtonMonitorIntent);
+          return;
         }
     }
 }
