@@ -5,16 +5,16 @@ import android.widget.Toast;
 
 import android.app.Activity;
 
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Messenger;
+
 import android.content.Intent;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.content.BroadcastReceiver;
-
-import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Messenger;
 
 public class PowerButtonMonitor extends Activity {
 
@@ -23,18 +23,16 @@ public class PowerButtonMonitor extends Activity {
   private static long backPressedTime = 0;
   private static Intent powerButtonMonitorIntent;
 
-  BroadcastReceiver PowerButtonMonitorReceiver = new BroadcastReceiver() {    
+  private BroadcastReceiver PowerButtonMonitorReceiver = new BroadcastReceiver() {    
     @Override
     public void onReceive(Context context, Intent intent) {
 
       if(intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
-        //Log.i("[PowerButtonMonitorReceiver]", "Screen ON");
         powerButtonMonitorIntent = new Intent(context, PowerButtonMonitorService.class);
         powerButtonMonitorIntent.putExtra("state", "on");
         context.startService(powerButtonMonitorIntent);
       }
       else if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
-        //Log.i("[PowerButtonMonitorReceiver]", "Screen OFF");
         powerButtonMonitorIntent = new Intent(context, PowerButtonMonitorService.class);
         powerButtonMonitorIntent.putExtra("state", "off");
         context.startService(powerButtonMonitorIntent);
