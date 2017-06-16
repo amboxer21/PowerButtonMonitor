@@ -16,7 +16,6 @@ import android.telephony.TelephonyManager;
 
 public class PowerButtonMonitorService extends Service {
 
-  private static String state = "on";
   private static boolean is_screen_off = true;
 
   @Override
@@ -31,8 +30,7 @@ public class PowerButtonMonitorService extends Service {
     Bundle extras = intent.getExtras(); 
 
     if(extras != null) {
-      state = extras.getString("state");
-      if(state.equals("on")) {
+      if(extras.getString("state").equals("on")) {
         is_screen_off = true;
         Log.d("PowerButtonMonitorService is_screen_off", "true");
       }
