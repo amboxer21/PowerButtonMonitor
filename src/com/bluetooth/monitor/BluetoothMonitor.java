@@ -1,9 +1,11 @@
-package com.powerbutton.monitor;
+package com.bluetooth.monitor;
 
 import android.util.Log;
 import android.widget.Toast;
 
 import android.app.Activity;
+ 
+import android.bluetooth.BluetoothAdapter;
 
 import android.os.Bundle;
 import android.os.IBinder;
@@ -16,28 +18,37 @@ import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.content.BroadcastReceiver;
 
-public class PowerButtonMonitor extends Activity {
+public class BluetoothMonitor extends Activity {
 
   private boolean mBound;
   private Messenger mService = null;
   private static long backPressedTime = 0;
-  private static Intent powerButtonMonitorIntent;
+  private static Intent bluetoothMonitorIntent;
 
-  private BroadcastReceiver PowerButtonMonitorReceiver = new BroadcastReceiver() {    
+  private BroadcastReceiver BluetoothMonitorReceiver = new BroadcastReceiver() {    
     @Override
     public void onReceive(Context context, Intent intent) {
 
-      if(intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
-        powerButtonMonitorIntent = new Intent(context, PowerButtonMonitorService.class);
-        powerButtonMonitorIntent.putExtra("state", "on");
-        context.startService(powerButtonMonitorIntent);
-      }
-      else if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
-        powerButtonMonitorIntent = new Intent(context, PowerButtonMonitorService.class);
-        powerButtonMonitorIntent.putExtra("state", "off");
-        context.startService(powerButtonMonitorIntent);
-      }
+      final String action = intent.getAction();
 
+      if(action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+        final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+          BluetoothAdapter.ERROR);
+        switch(state) {
+          case BluetoothAdapter.STATE_OFF:
+            Toast.makeText(context, "Bluetooth off", Toast.LENGTH_LONG).show();
+            break;
+          case BluetoothAdapter.STATE_TURNING_OFF:
+            Toast.makeText(context, "Turning Bluetooth off", Toast.LENGTH_LONG).show();
+            break;
+          case BluetoothAdapter.STATE_ON:
+            Toast.makeText(context, "Bluetooth on", Toast.LENGTH_LONG).show();
+            break;
+          case BluetoothAdapter.STATE_TURNING_ON:
+            Toast.makeText(context, "Turning Bluetooth on", Toast.LENGTH_LONG).show();
+            break;
+        }
+      } 
     }
   };
 
@@ -46,11 +57,11 @@ public class PowerButtonMonitor extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
 
-    Intent serviceIntent = new Intent(this, PowerButtonMonitorService.class);
+    Intent serviceIntent = new Intent(this, BluetoothMonitorService.class);
     startService(serviceIntent);
 
-    registerReceiver(PowerButtonMonitorReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON)); 
-    registerReceiver(PowerButtonMonitorReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
+    registerReceiver(BluetoothMonitorReceiver,
+      new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 
   }
 
